@@ -1,0 +1,12 @@
+FROM openjdk:{{ java_version }}-jre-slim
+
+WORKDIR /app
+
+COPY target/{{ app_name }}.{{ packaging }} app.{{ packaging }}
+
+# Set environment variables from manifest if available
+{% for key, value in env.items() %}
+ENV {{ key }}="{{ value }}"
+{% endfor %}
+
+ENTRYPOINT ["java", "-jar", "app.{{ packaging }}"]
